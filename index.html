@@ -91,6 +91,9 @@
   .plate-hero:hover::before{ transform:scale(1.04); }
   .plate-hero.a::before{ background:radial-gradient(circle at 45% 35%, rgba(120,110,170,0.14), transparent 50%), linear-gradient(160deg,#19181d,#0a0a0b 75%); }
   .plate-hero.c::before{ background:radial-gradient(circle at 55% 30%, rgba(200,200,210,0.10), transparent 45%), linear-gradient(160deg,#17171a,#0a0a0b 75%); }
+  .plate-hero.d{ margin-top:30px; }
+  .plate-hero.d::before{ background:radial-gradient(circle at 50% 35%, rgba(110,150,100,0.14), transparent 50%), linear-gradient(160deg,#181c17,#0a0a0b 75%); }
+  @media (max-width:760px){ .plate-hero.d{ margin-top:0; } }
 
   /* sections */
   section{ padding:110px 0; border-top:1px solid var(--line); }
@@ -98,7 +101,7 @@
   .section-head h2{ font-size:clamp(1.8rem,3.4vw,2.6rem); }
   .section-head .desc{ color:var(--ink-dim); max-width:36ch; font-size:0.95rem; }
 
-  .gallery{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--line); }
+  .gallery{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:2px; background:var(--line); }
   @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
   .plate{
     position:relative; aspect-ratio:4/5; background:var(--bg-raised); overflow:hidden;
@@ -190,6 +193,9 @@
   <a href="#street" class="plate-hero c" aria-label="Voir Street Photo">
     <img src="images/hero-street.jpg" alt="Street Photo" onerror="this.remove()">
   </a>
+  <a href="#nature" class="plate-hero d" aria-label="Voir Nature">
+    <img src="images/hero-nature.jpg" alt="Nature" onerror="this.remove()">
+  </a>
 </section>
 
 <section id="reportage">
@@ -198,9 +204,10 @@
       <h2>Reportage</h2>
     </div>
     <div class="gallery">
-      <div class="plate reportage"><img src="images/reportage-1.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">Série — </span></div>
-      <div class="plate reportage"><img src="images/reportage-2.jpg" alt="" onerror="this.remove()"><span class="no">11</span><span class="tag">Série — </span></div>
-      <div class="plate reportage"><img src="images/reportage-3.jpg" alt="" onerror="this.remove()"><span class="no">19</span><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">Série — </span></div>
     </div>
   </div>
 </section>
@@ -211,9 +218,11 @@
       <h2>Street Photo</h2>
     </div>
     <div class="gallery">
-      <div class="plate street"><img src="images/street-1.jpg" alt="" onerror="this.remove()"><span class="no">07</span><span class="tag">titre</span></div>
-      <div class="plate street"><img src="images/street-2.jpg" alt="" onerror="this.remove()"><span class="no">13</span><span class="tag">titre</span></div>
-      <div class="plate street"><img src="images/street-3.jpg" alt="" onerror="this.remove()"><span class="no">22</span><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-5.jpg" alt="" onerror="this.remove()"><span class="no">05</span><span class="tag">titre</span></div>
     </div>
   </div>
 </section>
@@ -224,9 +233,11 @@
       <h2>Mode</h2>
     </div>
     <div class="gallery">
-      <div class="plate mode"><img src="images/mode-1.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">TITRE</span></div>
-      <div class="plate mode"><img src="images/mode-2.jpg" alt="" onerror="this.remove()"><span class="no">09</span><span class="tag">titre</span></div>
-      <div class="plate mode"><img src="images/mode-3.jpg" alt="" onerror="this.remove()"><span class="no">15</span><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-5.jpg" alt="" onerror="this.remove()"><span class="no">05</span><span class="tag">titre</span></div>
     </div>
   </div>
 </section>
@@ -237,9 +248,11 @@
       <h2>Nature</h2>
     </div>
     <div class="gallery">
-      <div class="plate nature"><img src="images/nature-1.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
-      <div class="plate nature"><img src="images/nature-2.jpg" alt="" onerror="this.remove()"><span class="no">08</span><span class="tag">titre</span></div>
-      <div class="plate nature"><img src="images/nature-3.jpg" alt="" onerror="this.remove()"><span class="no">14</span><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-5.jpg" alt="" onerror="this.remove()"><span class="no">05</span><span class="tag">titre</span></div>
     </div>
     <div class="cat-links">
       <a href="#reportage">Voir Reportage →</a>
