@@ -54,6 +54,7 @@
     transition:opacity .5s cubic-bezier(.2,.9,.25,1), transform .5s cubic-bezier(.2,.9,.25,1), visibility 0s .5s;
   }
   body.menu-open .menu-overlay{ opacity:1; visibility:visible; transform:translateY(0); transition-delay:0s; }
+  body.menu-open .menu-btn{ visibility:hidden; pointer-events:none; }
   .menu-overlay ul{ list-style:none; margin:0; padding:0; text-align:center; }
   .menu-overlay li{ margin:14px 0; }
   .menu-overlay a{
@@ -80,19 +81,14 @@
   .plate-hero img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; transition:transform .8s cubic-bezier(.2,.9,.25,1); }
   .plate-hero:hover img{ transform:scale(1.04); }
   .plate-hero.b{ flex:1.15; margin-top:0; }
-  .plate-hero.a{ margin-top:70px; }
-  .plate-hero.c{ margin-top:110px; }
+  .plate-hero.a{ margin-top:0; }
+  .plate-hero.c{ margin-top:0; }
   @media (max-width:760px){ .plate-hero.a, .plate-hero.c{ margin-top:0; } }
   .plate-hero::before{
-    content:''; position:absolute; inset:0; z-index:1; opacity:.5;
-    background:radial-gradient(circle at 50% 42%, rgba(169,122,74,0.16), transparent 45%), linear-gradient(160deg,#1c1a1c,#000000 75%);
-    transition:transform .8s cubic-bezier(.2,.9,.25,1);
+    content:''; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0) 40%);
   }
-  .plate-hero:hover::before{ transform:scale(1.04); }
-  .plate-hero.a::before{ background:radial-gradient(circle at 45% 35%, rgba(120,110,170,0.14), transparent 50%), linear-gradient(160deg,#19181d,#000000 75%); }
-  .plate-hero.c::before{ background:radial-gradient(circle at 55% 30%, rgba(200,200,210,0.10), transparent 45%), linear-gradient(160deg,#17171a,#000000 75%); }
-  .plate-hero.d{ margin-top:30px; }
-  .plate-hero.d::before{ background:radial-gradient(circle at 50% 35%, rgba(110,150,100,0.14), transparent 50%), linear-gradient(160deg,#181c17,#000000 75%); }
+  .plate-hero.d{ margin-top:0; }
   @media (max-width:760px){ .plate-hero.d{ margin-top:0; } }
 
   /* sections */
@@ -111,7 +107,7 @@
   .plate::before{ content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0) 45%); }
   .plate.reportage, .plate.street, .plate.mode, .plate.nature{ background:#0d0d0e; }
   .plate .tag{ position:relative; z-index:2; font-size:0.8rem; color:var(--ink-dim); }
-  .plate .no{ position:absolute; top:16px; right:18px; font-size:0.72rem; color:var(--safelight-dim); z-index:2; }
+  .plate .no{ position:absolute; top:16px; right:18px; font-size:0.72rem; color:var(--ink); z-index:2; }
   .plate:hover .tag{ color:var(--ink); transition:color .3s ease; }
 
   .cat-links{ display:flex; gap:28px; margin-top:40px; flex-wrap:wrap; }
@@ -144,6 +140,14 @@
   .foot-links a{ text-decoration:none; }
   .foot-links a:hover{ color:var(--ink); }
   .foot-meta{ margin-top:60px; display:flex; justify-content:space-between; color:var(--ink-dim); font-size:0.78rem; flex-wrap:wrap; gap:10px; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.82); opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .lightbox.active{ opacity:1; visibility:visible; }
+  .lightbox img{ max-width:88vw; max-height:88vh; object-fit:contain; box-shadow:0 30px 70px rgba(0,0,0,0.7); }
 
   :focus-visible{ outline:1px solid var(--safelight); outline-offset:3px; }
   @media (prefers-reduced-motion: reduce){
@@ -317,6 +321,8 @@
   </div>
 </footer>
 
+<div class="lightbox" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
+
 <script>
   const openBtn = document.getElementById('menu-open');
   const closeBtn = document.getElementById('menu-close');
@@ -326,6 +332,19 @@
   closeBtn.addEventListener('click', closeMenu);
   document.querySelectorAll('.menu-link').forEach(a=> a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.plate-hero img, .plate img, .product .shot img').forEach(img=>{
+    img.addEventListener('mouseenter', ()=>{
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('active');
+    });
+    img.addEventListener('mouseleave', ()=>{
+      lightbox.classList.remove('active');
+    });
+  });
 
   let count = 0;
   document.querySelectorAll('.add-btn').forEach(btn=>{
