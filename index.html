@@ -21,10 +21,10 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
     box-sizing: border-box;
   }
-  html{ scroll-behavior:smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top,0px)); }
+  html{ scroll-behavior:smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top,0px)); overflow-x:hidden; }
   *{ box-sizing:border-box; }
   body{
-    margin:0; background:var(--bg); color:var(--ink);
+    margin:0; overflow-x:hidden; background:var(--bg); color:var(--ink);
     font-family:'Inter',system-ui,sans-serif; font-size:16px; line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
@@ -55,13 +55,17 @@
   }
   body.menu-open .menu-overlay{ opacity:1; visibility:visible; transform:translateY(0); transition-delay:0s; }
   body.menu-open .menu-btn{ visibility:hidden; pointer-events:none; }
+  body.menu-open header{ pointer-events:none; }
+  body.menu-open .menu-overlay{ pointer-events:auto; }
+  .logo a{ text-decoration:none; color:inherit; }
   .menu-overlay ul{ list-style:none; margin:0; padding:0; text-align:center; }
   .menu-overlay li{ margin:14px 0; }
-  .menu-overlay a{
+  .menu-overlay a, .menu-overlay button.menu-link{
     font-family:'Fraunces',serif; font-size:clamp(1.8rem,5vw,3rem); text-decoration:none; color:var(--ink-dim);
     transition:color .3s ease;
   }
-  .menu-overlay a:hover, .menu-overlay a:focus-visible{ color:var(--ink); }
+  .menu-overlay a:hover, .menu-overlay a:focus-visible,
+  .menu-overlay button.menu-link:hover, .menu-overlay button.menu-link:focus-visible{ color:var(--ink); }
   .menu-close{
     position:absolute; top:26px; right:32px; background:none; border:none; color:var(--ink);
     font-family:inherit; font-size:0.78rem; letter-spacing:0.16em; text-transform:uppercase; cursor:pointer;
@@ -146,14 +150,65 @@
   .lightbox{
     position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
     background:rgba(0,0,0,0.75); opacity:0; visibility:hidden; pointer-events:none;
-    transition:opacity .45s cubic-bezier(.2,.9,.25,1), visibility 0s .45s;
+    transition:opacity .9s cubic-bezier(.16,.8,.24,1), visibility 0s .9s;
   }
-  .lightbox.active{ opacity:1; visibility:visible; transition:opacity .45s cubic-bezier(.2,.9,.25,1); }
+  .lightbox.active{ opacity:1; visibility:visible; pointer-events:auto; transition:opacity .9s cubic-bezier(.16,.8,.24,1); }
   .lightbox img{
     max-width:60vw; max-height:65vh; object-fit:contain; box-shadow:0 30px 70px rgba(0,0,0,0.7);
-    transform:scale(.94); transition:transform .45s cubic-bezier(.2,.9,.25,1);
+    transform:scale(.98); transition:transform .9s cubic-bezier(.16,.8,.24,1);
   }
   .lightbox.active img{ transform:scale(1); }
+
+  /* cart drawer */
+  .cart-overlay{
+    position:fixed; inset:0; z-index:90; background:rgba(0,0,0,0.6);
+    opacity:0; visibility:hidden; transition:opacity .4s ease, visibility 0s .4s;
+  }
+  body.cart-open .cart-overlay{ opacity:1; visibility:visible; transition:opacity .4s ease; }
+  .cart-drawer{
+    position:fixed; top:0; right:0; bottom:0; z-index:95; width:min(420px,92vw);
+    background:#0d0d0e; border-left:1px solid var(--line);
+    padding:calc(28px + env(safe-area-inset-top,0px)) 28px calc(28px + env(safe-area-inset-bottom,0px));
+    display:flex; flex-direction:column;
+    transform:translateX(100%); transition:transform .5s cubic-bezier(.2,.9,.25,1);
+    overflow-y:auto;
+  }
+  body.cart-open .cart-drawer{ transform:translateX(0); }
+  .cart-drawer h3{ font-size:1.3rem; margin-bottom:24px; }
+  .cart-drawer-close{
+    position:absolute; top:calc(26px + env(safe-area-inset-top,0px)); right:24px;
+    background:none; border:none; color:var(--ink-dim); font-family:inherit; font-size:0.78rem;
+    letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+  }
+  .cart-drawer-close:hover{ color:var(--ink); }
+  .cart-items{ display:flex; flex-direction:column; gap:18px; flex:1; margin-top:10px; }
+  .cart-empty{ color:var(--ink-dim); font-size:0.92rem; }
+  .cart-item{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; border-bottom:1px solid var(--line); padding-bottom:14px; }
+  .cart-item-name{ font-size:0.92rem; }
+  .cart-item-price{ font-size:0.85rem; color:var(--ink-dim); margin-top:4px; }
+  .cart-item-remove{ background:none; border:none; color:var(--ink-dim); cursor:pointer; font-size:0.78rem; text-decoration:underline; padding:0; }
+  .cart-item-remove:hover{ color:var(--safelight); }
+  .cart-total-row{ display:flex; justify-content:space-between; padding-top:18px; margin-top:4px; border-top:1px solid var(--line); font-size:1rem; }
+  .cart-checkout{
+    margin-top:20px; background:var(--safelight); color:#141312; border:none; padding:14px; font-family:inherit;
+    font-size:0.9rem; letter-spacing:0.04em; cursor:pointer; text-align:center; text-decoration:none; display:block;
+  }
+  .cart-checkout:hover{ background:#bd8958; }
+  .cart-checkout[disabled], .cart-checkout.disabled{ background:var(--bg-raised); color:var(--ink-dim); pointer-events:none; }
+  .cart-note{ font-size:0.76rem; color:var(--ink-dim); margin-top:14px; line-height:1.5; }
+
+  @media (max-width:760px){
+    .wrap{ padding:0 20px; }
+    .hero{ padding-left:0; padding-right:0; }
+    nav{ padding:20px; }
+    .logo{ font-size:0.68rem; letter-spacing:0.16em; }
+    section{ padding:64px 0; }
+    .section-head{ margin-bottom:32px; }
+    .menu-overlay a, .menu-overlay button.menu-link{ font-size:clamp(1.5rem,8vw,2.2rem); }
+    .cart-drawer{ padding-left:22px; padding-right:22px; }
+    .foot-row{ gap:30px; }
+    .lightbox img{ max-width:88vw; max-height:70vh; }
+  }
 
   :focus-visible{ outline:1px solid var(--safelight); outline-offset:3px; }
   @media (prefers-reduced-motion: reduce){
@@ -167,7 +222,7 @@
 
 <header>
   <nav>
-    <span class="logo">François Cerceau Lefavrais</span>
+    <span class="logo"><a href="#accueil">François Cerceau Lefavrais</a></span>
     <button class="menu-btn" id="menu-open" aria-haspopup="true" aria-expanded="false" aria-label="Ouvrir le menu">
       <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="0" y1="1" x2="22" y2="1" stroke="currentColor" stroke-width="1.5"/>
@@ -186,7 +241,7 @@
     <li><a href="#street" class="menu-link">Street Photo</a></li>
     <li><a href="#mode" class="menu-link">Mode</a></li>
     <li><a href="#nature" class="menu-link">Nature</a></li>
-    <li><a href="#boutique" class="menu-link">Boutique — <span id="cart-count">0</span></a></li>
+    <li><button class="menu-link" id="cart-open" style="background:none;border:none;font-family:inherit;cursor:pointer;">Boutique — <span id="cart-count">0</span></button></li>
   </ul>
 </div>
 
@@ -283,7 +338,7 @@
         <span class="edition">Édition limitée · 8/50 disponibles</span>
         <div class="price-row">
           <span class="price">180 €</span>
-          <button class="add-btn" data-name="Titre">Ajouter au panier</button>
+          <button class="add-btn" data-name="Titre — pl. 04" data-price="180" data-stripe="">Ajouter au panier</button>
         </div>
       </div>
       <div class="product">
@@ -292,7 +347,7 @@
         <span class="edition">Édition limitée · 23/50 disponibles</span>
         <div class="price-row">
           <span class="price">150 €</span>
-          <button class="add-btn" data-name="Titre">Ajouter au panier</button>
+          <button class="add-btn" data-name="Titre — pl. 07" data-price="150" data-stripe="">Ajouter au panier</button>
         </div>
       </div>
       <div class="product">
@@ -301,7 +356,7 @@
         <span class="edition">Édition limitée · 3/25 disponibles</span>
         <div class="price-row">
           <span class="price">220 €</span>
-          <button class="add-btn" data-name="Titre">Ajouter au panier</button>
+          <button class="add-btn" data-name="Titre — pl. 02" data-price="220" data-stripe="">Ajouter au panier</button>
         </div>
       </div>
     </div>
@@ -329,6 +384,17 @@
 
 <div class="lightbox" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
 
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <button class="cart-drawer-close" id="cart-close">Fermer</button>
+  <h3>Mon panier</h3>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-total-row"><span>Total</span><span id="cart-total">0 €</span></div>
+  <a href="#" class="cart-checkout disabled" id="cart-checkout">Choisir un tirage à payer</a>
+  <a href="#boutique" class="cart-note" id="cart-browse" style="display:block;margin-top:14px;">Voir les tirages disponibles →</a>
+  <p class="cart-note">Paiement sécurisé par Stripe. Chaque tirage se règle individuellement.</p>
+</div>
+
 <script>
   const openBtn = document.getElementById('menu-open');
   const closeBtn = document.getElementById('menu-close');
@@ -341,6 +407,7 @@
 
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
+  const isTouch = window.matchMedia('(hover: none)').matches;
   document.querySelectorAll('.plate-hero, .plate, .product .shot').forEach(frame=>{
     frame.addEventListener('mouseenter', ()=>{
       const img = frame.querySelector('img');
@@ -352,18 +419,91 @@
     frame.addEventListener('mouseleave', ()=>{
       lightbox.classList.remove('active');
     });
+    if(isTouch){
+      frame.addEventListener('click', (e)=>{
+        const img = frame.querySelector('img');
+        if(!img) return;
+        if(!lightbox.classList.contains('active')){
+          e.preventDefault();
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+        }
+      });
+    }
   });
+  lightbox.addEventListener('click', ()=> lightbox.classList.remove('active'));
 
-  let count = 0;
+  let cart = [];
+  const cartCount = document.getElementById('cart-count');
+  const cartItemsEl = document.getElementById('cart-items');
+  const cartTotalEl = document.getElementById('cart-total');
+  const cartCheckoutEl = document.getElementById('cart-checkout');
+
+  function renderCart(){
+    cartCount.textContent = cart.length;
+    if(cart.length === 0){
+      cartItemsEl.innerHTML = '<p class="cart-empty">Votre panier est vide pour l\'instant.</p>';
+    } else {
+      cartItemsEl.innerHTML = cart.map((item, i)=> `
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${item.price} €</div>
+          </div>
+          <button class="cart-item-remove" data-index="${i}">Retirer</button>
+        </div>`).join('');
+      cartItemsEl.querySelectorAll('.cart-item-remove').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          cart.splice(Number(b.dataset.index), 1);
+          renderCart();
+        });
+      });
+    }
+    const total = cart.reduce((sum, item)=> sum + item.price, 0);
+    cartTotalEl.textContent = total + ' €';
+
+    if(cart.length === 1){
+      cartCheckoutEl.textContent = 'Payer « ' + cart[0].name + ' »';
+      cartCheckoutEl.href = cart[0].stripeLink || '#';
+      cartCheckoutEl.classList.remove('disabled');
+    } else if(cart.length > 1){
+      cartCheckoutEl.textContent = 'Choisissez une seule pièce à la fois';
+      cartCheckoutEl.href = '#';
+      cartCheckoutEl.classList.add('disabled');
+    } else {
+      cartCheckoutEl.textContent = 'Choisir un tirage à payer';
+      cartCheckoutEl.href = '#';
+      cartCheckoutEl.classList.add('disabled');
+    }
+  }
+
   document.querySelectorAll('.add-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      count++;
-      document.getElementById('cart-count').textContent = count;
+      cart.push({
+        name: btn.dataset.name,
+        price: Number(btn.dataset.price),
+        stripeLink: btn.dataset.stripe
+      });
+      renderCart();
       btn.textContent = 'Ajouté ✓';
       btn.classList.add('added');
       setTimeout(()=>{ btn.textContent='Ajouter au panier'; btn.classList.remove('added'); }, 1400);
     });
   });
+
+  const cartOpenBtn = document.getElementById('cart-open');
+  const cartCloseBtn = document.getElementById('cart-close');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const openCart = ()=>{ closeMenu(); document.body.classList.add('cart-open'); };
+  const closeCart = ()=> document.body.classList.remove('cart-open');
+  cartOpenBtn.addEventListener('click', openCart);
+  cartCloseBtn.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+  document.getElementById('cart-browse').addEventListener('click', closeCart);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCart(); });
+
+  renderCart();
 </script>
 </body>
 </html>
