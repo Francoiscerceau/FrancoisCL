@@ -408,29 +408,31 @@
 
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-  const isTouch = window.matchMedia('(hover: none)').matches;
   function showPreview(img){
     lightboxImg.src = img.src;
     lightboxImg.alt = img.alt;
     lightbox.classList.add('active');
   }
   function hidePreview(){ lightbox.classList.remove('active'); }
+
+  let lastPointerType = 'mouse';
+  document.addEventListener('pointerdown', e=>{ lastPointerType = e.pointerType || 'mouse'; }, true);
+
   document.querySelectorAll('.plate-hero, .plate, .product .shot').forEach(frame=>{
     const img = frame.querySelector('img');
     if(!img) return;
-    if(isTouch){
-      frame.addEventListener('click', (e)=>{
+    frame.addEventListener('mouseenter', ()=>{ if(lastPointerType === 'mouse') showPreview(img); });
+    frame.addEventListener('mouseleave', ()=>{ if(lastPointerType === 'mouse') hidePreview(); });
+    frame.addEventListener('click', (e)=>{
+      if(lastPointerType === 'touch' || lastPointerType === 'pen'){
         if(lightbox.classList.contains('active') && lightboxImg.src === img.src){
           hidePreview();
         } else {
           e.preventDefault();
           showPreview(img);
         }
-      });
-    } else {
-      frame.addEventListener('mouseenter', ()=> showPreview(img));
-      frame.addEventListener('mouseleave', hidePreview);
-    }
+      }
+    });
   });
   lightbox.addEventListener('click', hidePreview);
 
