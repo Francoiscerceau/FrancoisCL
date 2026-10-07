@@ -113,7 +113,6 @@
   .plate::before{ content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0) 45%); }
   .plate.reportage, .plate.street, .plate.mode, .plate.nature{ background:#0d0d0e; }
   .plate .tag{ position:relative; z-index:2; font-size:0.8rem; color:var(--ink-dim); }
-  .plate .no{ position:absolute; top:16px; right:18px; font-size:0.72rem; color:var(--ink); z-index:2; }
   .plate:hover .tag{ color:var(--ink); transition:color .3s ease; }
 
   .cat-links{ display:flex; gap:28px; margin-top:40px; flex-wrap:wrap; }
@@ -183,7 +182,9 @@
   .cart-drawer-close:hover{ color:var(--ink); }
   .cart-items{ display:flex; flex-direction:column; gap:18px; flex:1; margin-top:10px; }
   .cart-empty{ color:var(--ink-dim); font-size:0.92rem; }
-  .cart-item{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; border-bottom:1px solid var(--line); padding-bottom:14px; }
+  .cart-item{ display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid var(--line); padding-bottom:14px; }
+  .cart-item-thumb{ width:56px; height:56px; object-fit:cover; flex-shrink:0; border:1px solid var(--line); background:#0d0d0e; }
+  .cart-item-info{ flex:1; }
   .cart-item-name{ font-size:0.92rem; }
   .cart-item-price{ font-size:0.85rem; color:var(--ink-dim); margin-top:4px; }
   .cart-item-remove{ background:none; border:none; color:var(--ink-dim); cursor:pointer; font-size:0.78rem; text-decoration:underline; padding:0; }
@@ -266,10 +267,10 @@
       <h2>Reportage</h2>
     </div>
     <div class="gallery">
-      <div class="plate reportage"><img src="images/reportage-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">Série — </span></div>
-      <div class="plate reportage"><img src="images/reportage-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">Série — </span></div>
-      <div class="plate reportage"><img src="images/reportage-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">Série — </span></div>
-      <div class="plate reportage"><img src="images/reportage-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-1.jpg" alt="" onerror="this.remove()"><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-2.jpg" alt="" onerror="this.remove()"><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-3.jpg" alt="" onerror="this.remove()"><span class="tag">Série — </span></div>
+      <div class="plate reportage"><img src="images/reportage-4.jpg" alt="" onerror="this.remove()"><span class="tag">Série — </span></div>
     </div>
   </div>
 </section>
@@ -280,11 +281,11 @@
       <h2>Street Photo</h2>
     </div>
     <div class="gallery">
-      <div class="plate street"><img src="images/street-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">titre</span></div>
-      <div class="plate street"><img src="images/street-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">titre</span></div>
-      <div class="plate street"><img src="images/street-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
-      <div class="plate street"><img src="images/street-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">titre</span></div>
-      <div class="plate street"><img src="images/street-5.jpg" alt="" onerror="this.remove()"><span class="no">05</span><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-1.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-2.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-3.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-4.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate street"><img src="images/street-5.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
     </div>
   </div>
 </section>
@@ -295,11 +296,11 @@
       <h2>Mode</h2>
     </div>
     <div class="gallery">
-      <div class="plate mode"><img src="images/mode-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">titre</span></div>
-      <div class="plate mode"><img src="images/mode-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">titre</span></div>
-      <div class="plate mode"><img src="images/mode-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
-      <div class="plate mode"><img src="images/mode-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">titre</span></div>
-      <div class="plate mode"><img src="images/mode-5.jpg" alt="" onerror="this.remove()"><span class="no">05</span><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-1.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-2.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-3.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-4.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate mode"><img src="images/mode-5.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
     </div>
   </div>
 </section>
@@ -310,11 +311,11 @@
       <h2>Nature</h2>
     </div>
     <div class="gallery">
-      <div class="plate nature"><img src="images/nature-1.jpg" alt="" onerror="this.remove()"><span class="no">01</span><span class="tag">titre</span></div>
-      <div class="plate nature"><img src="images/nature-2.jpg" alt="" onerror="this.remove()"><span class="no">02</span><span class="tag">titre</span></div>
-      <div class="plate nature"><img src="images/nature-3.jpg" alt="" onerror="this.remove()"><span class="no">03</span><span class="tag">titre</span></div>
-      <div class="plate nature"><img src="images/nature-4.jpg" alt="" onerror="this.remove()"><span class="no">04</span><span class="tag">titre</span></div>
-      <div class="plate nature"><img src="images/nature-5.jpg" alt="" onerror="this.remove()"><span class="no">05</span><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-1.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-2.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-3.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-4.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
+      <div class="plate nature"><img src="images/nature-5.jpg" alt="" onerror="this.remove()"><span class="tag">titre</span></div>
     </div>
     <div class="cat-links">
       <a href="#reportage">Voir Reportage →</a>
@@ -408,31 +409,30 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const isTouch = window.matchMedia('(hover: none)').matches;
+  function showPreview(img){
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('active');
+  }
+  function hidePreview(){ lightbox.classList.remove('active'); }
   document.querySelectorAll('.plate-hero, .plate, .product .shot').forEach(frame=>{
-    frame.addEventListener('mouseenter', ()=>{
-      const img = frame.querySelector('img');
-      if(!img) return;
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightbox.classList.add('active');
-    });
-    frame.addEventListener('mouseleave', ()=>{
-      lightbox.classList.remove('active');
-    });
+    const img = frame.querySelector('img');
+    if(!img) return;
     if(isTouch){
       frame.addEventListener('click', (e)=>{
-        const img = frame.querySelector('img');
-        if(!img) return;
-        if(!lightbox.classList.contains('active')){
+        if(lightbox.classList.contains('active') && lightboxImg.src === img.src){
+          hidePreview();
+        } else {
           e.preventDefault();
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt;
-          lightbox.classList.add('active');
+          showPreview(img);
         }
       });
+    } else {
+      frame.addEventListener('mouseenter', ()=> showPreview(img));
+      frame.addEventListener('mouseleave', hidePreview);
     }
   });
-  lightbox.addEventListener('click', ()=> lightbox.classList.remove('active'));
+  lightbox.addEventListener('click', hidePreview);
 
   let cart = [];
   const cartCount = document.getElementById('cart-count');
@@ -447,7 +447,8 @@
     } else {
       cartItemsEl.innerHTML = cart.map((item, i)=> `
         <div class="cart-item">
-          <div>
+          <img class="cart-item-thumb" src="${item.img}" alt="" onerror="this.style.display='none'">
+          <div class="cart-item-info">
             <div class="cart-item-name">${item.name}</div>
             <div class="cart-item-price">${item.price} €</div>
           </div>
@@ -480,10 +481,12 @@
 
   document.querySelectorAll('.add-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
+      const productImg = btn.closest('.product')?.querySelector('.shot img');
       cart.push({
         name: btn.dataset.name,
         price: Number(btn.dataset.price),
-        stripeLink: btn.dataset.stripe
+        stripeLink: btn.dataset.stripe,
+        img: productImg ? productImg.src : ''
       });
       renderCart();
       btn.textContent = 'Ajouté ✓';
