@@ -67,10 +67,11 @@
   .menu-overlay a:hover, .menu-overlay a:focus-visible,
   .menu-overlay button.menu-link:hover, .menu-overlay button.menu-link:focus-visible{ color:var(--ink); }
   .menu-close{
-    position:absolute; top:26px; right:32px; background:none; border:none; color:var(--ink);
-    font-family:inherit; font-size:0.78rem; letter-spacing:0.16em; text-transform:uppercase; cursor:pointer;
-    padding-top: env(safe-area-inset-top, 0px);
+    position:absolute; top:calc(18px + env(safe-area-inset-top, 0px)); right:22px; background:none; border:none; color:var(--ink);
+    cursor:pointer; width:44px; height:44px; display:flex; align-items:center; justify-content:center;
+    -webkit-tap-highlight-color:transparent;
   }
+  .menu-close svg, .cart-drawer-close svg{ display:block; }
 
   /* hero grid */
   .hero{
@@ -95,6 +96,12 @@
     background:linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0) 40%);
   }
   .plate-hero.d{ margin-top:0; }
+  .plate-hero .hero-title{
+    position:absolute; left:0; right:0; bottom:18px; z-index:2; text-align:center; pointer-events:none;
+    font-family:'Fraunces',Georgia,serif; font-size:clamp(1rem,1.8vw,1.35rem); letter-spacing:0.04em;
+    color:#fff; opacity:0.72; transition:opacity .4s ease;
+  }
+  .plate-hero:hover .hero-title{ opacity:0.95; }
   @media (max-width:760px){ .plate-hero.d{ margin-top:0; } }
 
   /* sections */
@@ -142,19 +149,49 @@
   .foot-row{ display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; align-items:flex-end; }
   footer h2{ font-size:clamp(1.6rem,3vw,2.2rem); max-width:16ch; }
   .foot-links{ display:flex; flex-direction:column; gap:8px; font-size:0.92rem; color:var(--ink-dim); }
-  .foot-links a{ text-decoration:none; }
-  .foot-links a:hover{ color:var(--ink); }
+  .foot-links a, .foot-links button{ text-decoration:none; }
+  .foot-links a:hover, .foot-links button:hover{ color:var(--ink); }
+  .foot-links button{ background:none; border:none; color:inherit; font-family:inherit; font-size:inherit; cursor:pointer; text-align:left; padding:0; }
+
+  /* contact modal */
+  .contact-overlay{
+    position:fixed; inset:0; z-index:150; background:rgba(0,0,0,0.75);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    opacity:0; visibility:hidden; transition:opacity .4s ease, visibility 0s .4s;
+  }
+  body.contact-open .contact-overlay{ opacity:1; visibility:visible; transition:opacity .4s ease; }
+  .contact-modal{
+    width:min(440px,100%); background:#0d0d0e; border:1px solid var(--line); padding:32px;
+    transform:translateY(12px); transition:transform .4s cubic-bezier(.2,.9,.25,1);
+  }
+  body.contact-open .contact-modal{ transform:translateY(0); }
+  .contact-modal h3{ font-size:1.3rem; margin-bottom:22px; }
+  .contact-field{ margin-bottom:16px; }
+  .contact-field label{ display:block; font-size:0.76rem; color:var(--ink-dim); letter-spacing:0.04em; margin-bottom:6px; }
+  .contact-field input, .contact-field textarea{
+    width:100%; background:#000; border:1px solid var(--line); color:var(--ink);
+    font-family:inherit; font-size:0.92rem; padding:10px 12px;
+  }
+  .contact-field input:focus, .contact-field textarea:focus{ outline:1px solid var(--safelight); border-color:var(--safelight); }
+  .contact-field textarea{ resize:vertical; min-height:110px; }
+  .contact-actions{ display:flex; gap:12px; margin-top:22px; }
+  .contact-send{ background:var(--safelight); color:#141312; border:none; padding:12px 20px; font-family:inherit; font-size:0.88rem; cursor:pointer; flex:1; }
+  .contact-send:hover{ background:#bd8958; }
+  .contact-cancel{ background:none; border:1px solid var(--line); color:var(--ink-dim); padding:12px 20px; font-family:inherit; font-size:0.88rem; cursor:pointer; }
+  .contact-cancel:hover{ color:var(--ink); border-color:var(--ink); }
   .foot-meta{ margin-top:60px; display:flex; justify-content:space-between; color:var(--ink-dim); font-size:0.78rem; flex-wrap:wrap; gap:10px; }
 
   .lightbox{
     position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
-    background:rgba(0,0,0,0.75); opacity:0; visibility:hidden; pointer-events:none;
-    transition:opacity .9s cubic-bezier(.16,.8,.24,1), visibility 0s .9s;
+    background:rgba(0,0,0,0.45);
+    -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .45s cubic-bezier(.2,.9,.25,1), visibility 0s .45s;
   }
-  .lightbox.active{ opacity:1; visibility:visible; pointer-events:auto; transition:opacity .9s cubic-bezier(.16,.8,.24,1); }
+  .lightbox.active{ opacity:1; visibility:visible; pointer-events:auto; transition:opacity .45s cubic-bezier(.2,.9,.25,1); }
   .lightbox img{
     max-width:60vw; max-height:65vh; object-fit:contain; box-shadow:0 30px 70px rgba(0,0,0,0.7);
-    transform:scale(.98); transition:transform .9s cubic-bezier(.16,.8,.24,1);
+    transform:scale(.94); transition:transform .45s cubic-bezier(.2,.9,.25,1);
   }
   .lightbox.active img{ transform:scale(1); }
 
@@ -175,9 +212,10 @@
   body.cart-open .cart-drawer{ transform:translateX(0); }
   .cart-drawer h3{ font-size:1.3rem; margin-bottom:24px; }
   .cart-drawer-close{
-    position:absolute; top:calc(26px + env(safe-area-inset-top,0px)); right:24px;
-    background:none; border:none; color:var(--ink-dim); font-family:inherit; font-size:0.78rem;
-    letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+    position:absolute; top:calc(14px + env(safe-area-inset-top,0px)); right:14px;
+    background:none; border:none; color:var(--ink-dim); cursor:pointer;
+    width:44px; height:44px; display:flex; align-items:center; justify-content:center;
+    -webkit-tap-highlight-color:transparent;
   }
   .cart-drawer-close:hover{ color:var(--ink); }
   .cart-items{ display:flex; flex-direction:column; gap:18px; flex:1; margin-top:10px; }
@@ -235,7 +273,12 @@
 </header>
 
 <div class="menu-overlay" id="menu-overlay">
-  <button class="menu-close" id="menu-close" aria-label="Fermer le menu">Fermer</button>
+  <button class="menu-close" id="menu-close" aria-label="Fermer le menu">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <line x1="3" y1="3" x2="19" y2="19" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="19" y1="3" x2="3" y2="19" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </button>
   <ul>
     <li><a href="#accueil" class="menu-link">Accueil</a></li>
     <li><a href="#reportage" class="menu-link">Reportage</a></li>
@@ -249,15 +292,19 @@
 <section id="accueil" class="hero" style="border-top:none;">
   <a href="#reportage" class="plate-hero a" aria-label="Voir Reportage">
     <img src="images/hero-reportage.jpg" alt="Reportage" onerror="this.remove()">
+    <span class="hero-title">Reportage</span>
   </a>
   <a href="#mode" class="plate-hero b" aria-label="Voir Mode">
     <img src="images/hero-mode.jpg" alt="Mode" onerror="this.remove()">
+    <span class="hero-title">Mode</span>
   </a>
   <a href="#street" class="plate-hero c" aria-label="Voir Street Photo">
     <img src="images/hero-street.jpg" alt="Street Photo" onerror="this.remove()">
+    <span class="hero-title">Street Photo</span>
   </a>
   <a href="#nature" class="plate-hero d" aria-label="Voir Nature">
     <img src="images/hero-nature.jpg" alt="Nature" onerror="this.remove()">
+    <span class="hero-title">Nature</span>
   </a>
 </section>
 
@@ -369,7 +416,7 @@
     <div class="foot-row">
       <h2>Contact </h2>
       <div class="foot-links">
-        <a href="francoiscerceau@gmail.com">FrançoisCL</a>
+        <button id="contact-open-btn">FrançoisCL</button>
         <a href="https://www.instagram.com/francoislefavrais/">Instagram</a>
       </div>
     </div>
@@ -385,9 +432,38 @@
 
 <div class="lightbox" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
 
+<div class="contact-overlay" id="contact-overlay">
+  <div class="contact-modal">
+    <h3>M'envoyer un message</h3>
+    <form id="contact-form">
+      <div class="contact-field">
+        <label for="contact-name">Nom et prénom</label>
+        <input type="text" id="contact-name" required>
+      </div>
+      <div class="contact-field">
+        <label for="contact-subject">Objet</label>
+        <input type="text" id="contact-subject" required>
+      </div>
+      <div class="contact-field">
+        <label for="contact-message">Message</label>
+        <textarea id="contact-message" required></textarea>
+      </div>
+      <div class="contact-actions">
+        <button type="submit" class="contact-send">Envoyer</button>
+        <button type="button" class="contact-cancel" id="contact-cancel">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="cart-overlay" id="cart-overlay"></div>
 <div class="cart-drawer" id="cart-drawer">
-  <button class="cart-drawer-close" id="cart-close">Fermer</button>
+  <button class="cart-drawer-close" id="cart-close" aria-label="Fermer le panier">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <line x1="3" y1="3" x2="19" y2="19" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="19" y1="3" x2="3" y2="19" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </button>
   <h3>Mon panier</h3>
   <div class="cart-items" id="cart-items"></div>
   <div class="cart-total-row"><span>Total</span><span id="cart-total">0 €</span></div>
@@ -509,6 +585,28 @@
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCart(); });
 
   renderCart();
+
+  const contactOpenBtn = document.getElementById('contact-open-btn');
+  const contactOverlay = document.getElementById('contact-overlay');
+  const contactCancelBtn = document.getElementById('contact-cancel');
+  const contactForm = document.getElementById('contact-form');
+  const openContact = ()=> document.body.classList.add('contact-open');
+  const closeContact = ()=> document.body.classList.remove('contact-open');
+  contactOpenBtn.addEventListener('click', openContact);
+  contactCancelBtn.addEventListener('click', closeContact);
+  contactOverlay.addEventListener('click', (e)=>{ if(e.target === contactOverlay) closeContact(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeContact(); });
+
+  contactForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('contact-name').value;
+    const subject = document.getElementById('contact-subject').value;
+    const message = document.getElementById('contact-message').value;
+    const body = `Nom et prénom : ${name}\n\n${message}`;
+    window.location.href = `mailto:francoiscerceau@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    closeContact();
+    contactForm.reset();
+  });
 </script>
 </body>
 </html>
