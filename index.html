@@ -188,7 +188,8 @@
     opacity:0; visibility:hidden; pointer-events:none;
     transition:none;
   }
-  .lightbox.active{ opacity:1; visibility:visible; pointer-events:auto; transition:none; }
+  .lightbox.active{ opacity:1; visibility:visible; transition:none; }
+  .lightbox.active.touch{ pointer-events:auto; }
   .lightbox img{
     max-width:60vw; max-height:65vh; object-fit:contain; box-shadow:0 30px 70px rgba(0,0,0,0.7);
     transform:none; transition:none;
@@ -484,12 +485,13 @@
 
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-  function showPreview(img){
-    lightboxImg.src = img.src;
+  function showPreview(img, viaTouch){
+    if(lightboxImg.src !== img.src) lightboxImg.src = img.src;
     lightboxImg.alt = img.alt;
+    lightbox.classList.toggle('touch', !!viaTouch);
     lightbox.classList.add('active');
   }
-  function hidePreview(){ lightbox.classList.remove('active'); }
+  function hidePreview(){ lightbox.classList.remove('active', 'touch'); }
 
   let lastPointerType = 'mouse';
   document.addEventListener('pointerdown', e=>{ lastPointerType = e.pointerType || 'mouse'; }, true);
@@ -505,7 +507,7 @@
           hidePreview();
         } else {
           e.preventDefault();
-          showPreview(img);
+          showPreview(img, true);
         }
       }
     });
