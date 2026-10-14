@@ -128,7 +128,7 @@
   .products{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
   @media (max-width:760px){ .products{ grid-template-columns:1fr; } }
   .product{ display:flex; flex-direction:column; gap:14px; }
-  .product .shot{ position:relative; aspect-ratio:1/1; background:linear-gradient(150deg,#201d1a,#0f0e0d 75%); border:1px solid var(--line); overflow:hidden; }
+  .product .shot{ position:relative; aspect-ratio:1/1; background:#000; border:1px solid var(--line); overflow:hidden; }
   .product .shot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .product h3{ font-size:1.15rem; font-weight:500; }
   .edition{ font-size:0.8rem; color:var(--safelight); }
@@ -140,6 +140,8 @@
     transition:border-color .25s, color .25s, background .25s;
   }
   .add-btn:hover, .add-btn:focus-visible{ border-color:var(--safelight); color:var(--safelight); }
+  .add-btn:disabled{ opacity:.45; cursor:not-allowed; }
+  .add-btn:disabled:hover{ border-color:var(--line); color:var(--ink); }
   .add-btn.added{ background:var(--safelight); border-color:var(--safelight); color:#141312; }
 
   footer{ padding:70px 0 calc(50px + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--line); }
@@ -221,7 +223,7 @@
   .cart-items{ display:flex; flex-direction:column; gap:18px; flex:1; margin-top:10px; }
   .cart-empty{ color:var(--ink-dim); font-size:0.92rem; }
   .cart-item{ display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid var(--line); padding-bottom:14px; }
-  .cart-item-thumb{ width:56px; height:56px; object-fit:cover; flex-shrink:0; border:1px solid var(--line); background:#0d0d0e; }
+  .cart-item-thumb{ width:56px; height:56px; object-fit:cover; flex-shrink:0; border:1px solid var(--line); background:#000; }
   .cart-item-info{ flex:1; }
   .cart-item-name{ font-size:0.92rem; }
   .cart-item-price{ font-size:0.85rem; color:var(--ink-dim); margin-top:4px; }
@@ -394,30 +396,30 @@
     </div>
     <div class="products">
       <div class="product">
-        <div class="shot"><img src="images/street-1.jpg" alt="" onerror="this.remove()"></div>
+        <div class="shot"></div>
         <h3>Bientôt Disponible</h3>
         <span class="edition">Édition limitée · 0/10 disponibles</span>
         <div class="price-row">
           <span class="price">00 €</span>
-          <button class="add-btn" data-name="Titre — pl. 04" data-price="180" data-stripe="" data-img="images/street-1.jpg">Ajouter au panier</button>
+          <button class="add-btn" data-name="Titre — pl. 04" data-price="0" data-stripe="" data-img="" disabled>Bientôt disponible</button>
         </div>
       </div>
       <div class="product">
-        <div class="shot"><img src="images/mode-1.jpg" alt="" onerror="this.remove()"></div>
+        <div class="shot"></div>
         <h3>Bientôt Disponible</h3>
         <span class="edition">Édition limitée · 0/15 disponibles</span>
         <div class="price-row">
           <span class="price">00 €</span>
-          <button class="add-btn" data-name="Titre — pl. 07" data-price="150" data-stripe="" data-img="images/mode-1.jpg">Ajouter au panier</button>
+          <button class="add-btn" data-name="Titre — pl. 07" data-price="0" data-stripe="" data-img="" disabled>Bientôt disponible</button>
         </div>
       </div>
       <div class="product">
-        <div class="shot"><img src="images/nature-1.jpg" alt="" onerror="this.remove()"></div>
-        <h3>Bienôt Disponible</h3>
+        <div class="shot"></div>
+        <h3>Bientôt Disponible</h3>
         <span class="edition">Édition limitée · 0/10 disponibles</span>
         <div class="price-row">
           <span class="price">00 €</span>
-          <button class="add-btn" data-name="Titre — pl. 02" data-price="220" data-stripe="" data-img="images/nature-1.jpg">Ajouter au panier</button>
+          <button class="add-btn" data-name="Titre — pl. 02" data-price="0" data-stripe="" data-img="" disabled>Bientôt disponible</button>
         </div>
       </div>
     </div>
@@ -553,7 +555,7 @@
     } else {
       cartItemsEl.innerHTML = cart.map((item, i)=> `
         <div class="cart-item">
-          <img class="cart-item-thumb" src="${esc(item.img)}" alt="" onerror="this.style.visibility='hidden'">
+          ${item.img ? `<img class="cart-item-thumb" src="${esc(item.img)}" alt="" onerror="this.style.visibility='hidden'">` : '<div class="cart-item-thumb"></div>'}
           <div class="cart-item-info">
             <div class="cart-item-name">${esc(item.name)}</div>
             <div class="cart-item-price">${item.price} €</div>
