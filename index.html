@@ -234,6 +234,14 @@
   }
   .cart-checkout:hover{ background:#bd8958; }
   .cart-checkout[disabled], .cart-checkout.disabled{ background:var(--bg-raised); color:var(--ink-dim); pointer-events:none; }
+  .thanks-banner{
+    position:fixed; left:50%; top:calc(76px + env(safe-area-inset-top,0px)); z-index:400;
+    transform:translate(-50%,-20px); opacity:0; visibility:hidden; pointer-events:none;
+    background:#0d0d0e; border:1px solid var(--safelight); color:var(--ink);
+    padding:14px 22px; font-size:0.9rem; max-width:min(520px,92vw); text-align:center;
+    transition:opacity .4s ease, transform .4s ease, visibility 0s .4s;
+  }
+  .thanks-banner.show{ opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); cursor:pointer; transition:opacity .4s ease, transform .4s ease; }
   .cart-note{ font-size:0.76rem; color:var(--ink-dim); margin-top:14px; line-height:1.5; }
 
   @media (max-width:760px){
@@ -258,6 +266,7 @@
 </style>
 </head>
 <body>
+<div class="thanks-banner" id="thanks-banner" role="status">Merci pour votre commande ! Un email de confirmation vous a été envoyé.</div>
 
 <header>
   <nav>
@@ -496,7 +505,7 @@
   let lastPointerType = 'mouse';
   document.addEventListener('pointerdown', e=>{ lastPointerType = e.pointerType || 'mouse'; }, true);
 
-  document.querySelectorAll('.plate-hero, .plate, .product .shot').forEach(frame=>{
+  document.querySelectorAll('.plate, .product .shot').forEach(frame=>{
     const img = frame.querySelector('img');
     if(!img) return;
     frame.addEventListener('mouseenter', ()=>{ if(lastPointerType === 'mouse') showPreview(img); });
@@ -514,22 +523,35 @@
   });
   lightbox.addEventListener('click', hidePreview);
 
-  let cart = [];
+  const CART_KEY = 'fcl-cart-v1';
+  const esc = (t)=> String(t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function loadCart(){
+    try{
+      const raw = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      return Array.isArray(raw) ? raw.filter(i=> i && typeof i.name === 'string' && Number.isFinite(i.price))
+        .map(i=>({ name:i.name, price:i.price, stripeLink:String(i.stripeLink||''), img:String(i.img||'') })) : [];
+    }catch(e){ return []; }
+  }
+  function saveCart(){
+    try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }catch(e){}
+  }
+  let cart = loadCart();
   const cartCount = document.getElementById('cart-count');
   const cartItemsEl = document.getElementById('cart-items');
   const cartTotalEl = document.getElementById('cart-total');
   const cartCheckoutEl = document.getElementById('cart-checkout');
 
   function renderCart(){
+    saveCart();
     cartCount.textContent = cart.length;
     if(cart.length === 0){
       cartItemsEl.innerHTML = '<p class="cart-empty">Votre panier est vide pour l\'instant.</p>';
     } else {
       cartItemsEl.innerHTML = cart.map((item, i)=> `
         <div class="cart-item">
-          <img class="cart-item-thumb" src="${item.img}" alt="" onerror="this.style.visibility='hidden'">
+          <img class="cart-item-thumb" src="${esc(item.img)}" alt="" onerror="this.style.visibility='hidden'">
           <div class="cart-item-info">
-            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-name">${esc(item.name)}</div>
             <div class="cart-item-price">${item.price} €</div>
           </div>
           <button class="cart-item-remove" data-index="${i}">Retirer</button>
@@ -585,6 +607,16 @@
   cartOverlay.addEventListener('click', closeCart);
   document.getElementById('cart-browse').addEventListener('click', closeCart);
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCart(); });
+
+  // Retour de Stripe après un paiement : on vide le panier et on remercie
+  if(new URLSearchParams(location.search).get('commande') === 'ok'){
+    cart = [];
+    history.replaceState(null, '', location.pathname + location.hash);
+    const thanks = document.getElementById('thanks-banner');
+    thanks.classList.add('show');
+    setTimeout(()=> thanks.classList.remove('show'), 9000);
+    thanks.addEventListener('click', ()=> thanks.classList.remove('show'));
+  }
 
   renderCart();
 
